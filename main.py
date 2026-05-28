@@ -8,9 +8,9 @@ from src.analyzer import DerivAnalyzer
 def main():
     """Main function with example usage"""
     
-    print("="*60)
-    print("DERIV ANALYSIS TOOL - Market & Digit Predictions")
-    print("="*60)
+    print("="*70)
+    print("DERIV ANALYSIS TOOL - Market, Digit & Volatility Predictions")
+    print("="*70)
     
     # Initialize analyzer
     analyzer = DerivAnalyzer()
@@ -23,9 +23,9 @@ def main():
         1.2110, 1.2115, 1.2120, 1.2115, 1.2125
     ]
     
-    print("\n" + "-"*60)
+    print("\n" + "-"*70)
     print("MARKET ANALYSIS PREDICTIONS")
-    print("-"*60)
+    print("-"*70)
     
     # Get market predictions
     market_predictions = analyzer.predict_market(market_data)
@@ -58,10 +58,27 @@ def main():
     print(f"   Probability Rise: {rf['probability_rise']*100:.2f}%")
     print(f"   Probability Fall: {rf['probability_fall']*100:.2f}%")
     print(f"   Confidence: {rf['confidence']*100:.2f}%")
+    print(f"   Trend: {rf['trend']:.4f}")
+    print(f"   Volatility: {rf['volatility']:.6f}")
+    print(f"   Recent Movement: {rf['recent_movement']:.4f}")
     
-    print("\n" + "-"*60)
+    print("\n5. VOLATILITY ANALYSIS:")
+    vol = market_predictions["volatility"]
+    print(f"   Historical Volatility: {vol['historical_volatility']:.6f}")
+    print(f"   Realized Volatility: {vol['realized_volatility']:.6f}")
+    print(f"   Parkinson Volatility: {vol['parkinson_volatility']:.6f}")
+    print(f"   Garman-Klass Volatility: {vol['garman_klass_volatility']:.6f}")
+    print(f"   Average True Range: {vol['average_true_range']:.6f}")
+    print(f"   Standard Deviation: {vol['standard_deviation']:.6f}")
+    print(f"   Coefficient of Variation: {vol['coefficient_of_variation']:.6f}")
+    print(f"   Range Volatility: {vol['range_volatility']:.6f}")
+    print(f"   Volatility Level: {vol['volatility_level']}")
+    print(f"   Volatility Trend: {vol['volatility_trend']}")
+    print(f"   Average Volatility: {vol['average_volatility']:.6f}")
+    
+    print("\n" + "-"*70)
     print("DIGIT PREDICTIONS (0-9)")
-    print("-"*60)
+    print("-"*70)
     
     # Get digit predictions
     digit_predictions = analyzer.predict_digits(market_data)
@@ -73,9 +90,27 @@ def main():
     
     print(f"\nMost Likely Digits: {digit_predictions['most_likely_digits']}")
     
-    print("\n" + "-"*60)
+    print("\nDigit Volatility Analysis:")
+    vol_digit = digit_predictions["volatility"]
+    print(f"   Volatility Level: {vol_digit['volatility_level']}")
+    print(f"   Average Volatility: {vol_digit['average_volatility']:.6f}")
+    print(f"   Volatility Trend: {vol_digit['volatility_trend']}")
+    print(f"   Standard Deviation: {vol_digit['standard_deviation']:.6f}")
+    
+    print("\n" + "-"*70)
+    print("COMPREHENSIVE VOLATILITY REPORT")
+    print("-"*70)
+    
+    vol_report = analyzer.get_volatility_report()
+    if "error" not in vol_report:
+        print(f"\nTotal Analyses Performed: {vol_report['total_analyses']}")
+        if 'volatility_of_volatility' in vol_report:
+            print(f"Volatility of Volatility: {vol_report['volatility_of_volatility']:.6f}")
+            print(f"Average Volatility Across Periods: {vol_report['average_volatility_across_periods']:.6f}")
+    
+    print("\n" + "-"*70)
     print("CONFIDENCE SCORES")
-    print("-"*60)
+    print("-"*70)
     scores = analyzer.get_confidence_scores()
     for key, value in scores.items():
         if isinstance(value, (int, float)):
@@ -83,9 +118,9 @@ def main():
         else:
             print(f"   {key}: {value}")
     
-    print("\n" + "="*60)
+    print("\n" + "="*70)
     print("Analysis Complete!")
-    print("="*60)
+    print("="*70)
     
     # Export results
     analyzer.export_results("predictions_results.json")
